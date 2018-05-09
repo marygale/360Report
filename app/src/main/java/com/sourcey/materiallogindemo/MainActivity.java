@@ -1,5 +1,7 @@
 package com.sourcey.materiallogindemo;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,17 +15,34 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-/*public class MainActivity extends AppCompatActivity {*/
+    // All static variables
+    static final String URL = "http://api.androidhive.info/music/music.xml";
+    // XML node keys
+    static final String KEY_SONG = "song"; // parent node
+    static final String KEY_ID = "id";
+    static final String KEY_TITLE = "title";
+    static final String KEY_ARTIST = "artist";
+    static final String KEY_DURATION = "duration";
+    static final String KEY_THUMB_URL = "thumb_url";
+
+    ListView list;
+    LazyAdapter adapter;
+
+    ArrayList<String> arSurveyListt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toast.makeText(getApplicationContext(), "Animal Selected ",   Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,6 +66,10 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+
+        showSurveyList();
+
+
     }
 
     @Override
@@ -104,4 +127,27 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    void showSurveyList(){
+        ListView listSurvey = (ListView)findViewById(R.id.list);
+        arSurveyListt = new ArrayList<String>();
+        getSurveyList();
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_row,
+                R.id.title, arSurveyListt);
+        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_row, arSurveyListt);*/
+        listSurvey.setAdapter(arrayAdapter);
+        String selectedSurvey = arSurveyListt.get(1);
+        Toast.makeText(getApplicationContext(), "Survey Selected : "+selectedSurvey,   Toast.LENGTH_LONG).show();
+
+
+    }
+
+    void getSurveyList(){
+        arSurveyListt.add("Feedback for Principal Sam Go");
+        arSurveyListt.add("Feedback for Principal Lee Ho");
+        arSurveyListt.add("Feedback for Assistant Principal Amy Nhe");
+        arSurveyListt.add("Feedback for Dr. James Arnold");
+        arSurveyListt.add("Feedback for Sir. Andrew Ching");
+    }
+
 }
